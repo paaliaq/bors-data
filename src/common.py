@@ -1,4 +1,4 @@
-def instrumentDictionary(json_request):
+def instrument_dictionary(json_request):
 
     # Create list of tickers with additional data
     names = []
@@ -8,7 +8,7 @@ def instrumentDictionary(json_request):
     sector = []
     market = []
     country = []
-    ins_Id = []
+    ins_id = []
 
     for tickIterator in json_request["instruments"]:
         temp1 = tickIterator['name']
@@ -26,31 +26,31 @@ def instrumentDictionary(json_request):
         sector.append(temp5)
         market.append(temp6)
         country.append(temp7)
-        ins_Id.append(temp8)
+        ins_id.append(temp8)
 
-    return names, url, instrument, ticker, sector, market, country, ins_Id;
-
-
-def idConv(ticker_name, ticker_list, ins_Id):
-    indexTemp = ticker_list.index(ticker_name)
-    return str(ins_Id[indexTemp])
+    return names, url, instrument, ticker, sector, market, country, ins_id
 
 
-def getCountry(id, countries):
+def id_conv(ticker_name, ticker_list, ins_id):
+    index_temp = ticker_list.index(ticker_name)
+    return str(ins_id[index_temp])
+
+
+def get_country(id, countries):
     for item in countries:
         if item['id'] == id:
             break
     return item['name']
 
 
-def getMarket(id, markets):
+def get_market(id, markets):
     for item in markets:
         if item['id'] == id:
             break
     return item['name']
 
 
-def getSector(id, sectors):
+def get_sector(id, sectors):
     for item in sectors:
         if item['id'] == id:
             break
