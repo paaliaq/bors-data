@@ -1,4 +1,4 @@
-FROM python:latest
+FROM python:3.6-stretch
 WORKDIR /bors-data
 COPY src
 COPY requirements.txt requirements.txt
