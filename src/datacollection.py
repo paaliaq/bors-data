@@ -19,17 +19,22 @@ class CollectTickerData:
         temp_price_data = requests.get("https://apiservice.borsdata.se/v1/instruments/" + id_conv(
             ticker_name, ticker_list, ins_id) + "/stockprices?authKey=" + apikey).json()
         ticker_price_data = []
-
-        for item in temp_price_data["stockPricesList"]:
-            temp_price = [item["d"], item["c"], item["o"], item["h"], item["l"], item["v"]]
-            ticker_price_data.append(temp_price)
+        try:
+            for item in temp_price_data["stockPricesList"]:
+                temp_price = [item["d"], item["c"], item["o"], item["h"], item["l"], item["v"]]
+                ticker_price_data.append(temp_price)
             
-        ticker_price_data_frame = pd.DataFrame(data=ticker_price_data,
-                                               columns=("Time", "Close", "Open", "High", "Low", "volume"))
-        self.priceData = ticker_price_data_frame
-        
+            ticker_price_data_frame = pd.DataFrame(data=ticker_price_data,
+                                                   columns=("Time", "Close", "Open", "High", "Low", "volume"))
+            self.priceData = ticker_price_data_frame
+
+            print("Price data downloaded for stock " + ticker_name)
+
+        except Exception:
+            print("couldn't download price data for stock " + ticker_name)
+
         sleep(0.5)
-        
+
         """ Year Data """
         temp_year = requests.get(
             "https://apiservice.borsdata.se/v1/instruments/" + id_conv(ticker_name, ticker_list, ins_id) +
@@ -70,11 +75,10 @@ class CollectTickerData:
             
             self.yearData = year_data_frame
 
-            print("Year data read")
-            
+            print("Year data downloaded for stock " + ticker_name)
+
         except Exception:
-            print("couldn't read year data")
-            print(temp_year)
+            print("couldn't download year data for stock " + ticker_name)
             
         sleep(0.5)
 
@@ -117,29 +121,26 @@ class CollectTickerData:
                                                   "cash_Flow_From_Financing_Activities", "cash_Flow_For_The_Year",
                                                   "free_Cash_Flow", "stock_Price_Average", "stock_Price_High",
                                                   "stock_Price_Low"))
-            print("Quarter data read")
             self.quarterData = quarter_data_frame
+
+            print("Quarter data downloaded for stock " + ticker_name)
+
             
         except Exception:
-            print("couldn't read quarter data")
-            print(temp_quarter)
+            print("couldn't download quarter data for stock " + ticker_name)
 
 
-def read_files_from_disk(ticker_list,
-                         selected_tickers=("ATRE", "AZN", "BILL"),
-                         selected_sectors="all",
-                         selected_countries="all",
-                         selected_market="all"):  # Ticker, Sector or Market
+def read_files_from_disk(ticker_list, current_wd):  # Ticker, Sector or Market
     read_datasets = {}
     for ticker in ticker_list["Ticker"]:
         year = pd.read_csv(
-            filepath_or_buffer="/Users/august/PycharmProjects/-BorsData-master/data/" + ticker + "/" + ticker +
+            filepath_or_buffer=current_wd + "/data/" + ticker + "/" + ticker +
                                    "Year" + ".csv")
         quarter = pd.read_csv(
-            filepath_or_buffer="/Users/august/PycharmProjects/-BorsData-master/data/" + ticker + "/" + ticker +
+            filepath_or_buffer=current_wd + "/data/" + ticker + "/" + ticker +
                                    "Quarter" + ".csv")
         price = pd.read_csv(
-            filepath_or_buffer="/Users/august/PycharmProjects/-BorsData-master/data/" + ticker + "/" + ticker +
+            filepath_or_buffer=current_wd + "/data/" + ticker + "/" + ticker +
                                    "price" + ".csv")
 
         read_datasets[ticker + "_year"] = year
@@ -208,7 +209,7 @@ def download_all_data(read_tickers, ticker_list, ins_id, apikey, current_wd):
         i = i + 1
         print('Reading item', i, ",", item)
         try:
-            tempObject = CollectTickerData(item, ticker_list=ticker_list, insId_list=ins_id, apiKey=apikey)
+            tempObject = CollectTickerData(item, ticker_list=ticker_list, ins_id=ins_id, apikey=apikey)
             tickers.append(tempObject)
         except Exception:
             print(item, 'failed collection')
