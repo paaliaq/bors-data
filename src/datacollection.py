@@ -1,12 +1,11 @@
 import requests
 import os
-from common import id_conv
-from common import instrument_dictionary
-from common import get_sector
-from common import get_market
-from common import get_country
+from src.common import id_conv
+from src.common import instrument_dictionary
+from src.common import get_sector
+from src.common import get_market
+from src.common import get_country
 from time import sleep
-import numpy as np
 import pandas as pd
 
 
@@ -132,64 +131,21 @@ def read_files_from_disk(ticker_list,
                          selected_countries="all",
                          selected_market="all"):  # Ticker, Sector or Market
     read_datasets = {}
-    if selected_market == "all" and selected_countries == "all" and selected_sectors == "all" and \
-            selected_tickers == "all":
-        for ticker in ticker_list["Ticker"]:
-            year = pd.read_csv(
-                filepath_or_buffer="/Users/august/PycharmProjects/-BorsData-master/data/" + ticker + "/" + ticker +
+    for ticker in ticker_list["Ticker"]:
+        year = pd.read_csv(
+            filepath_or_buffer="/Users/august/PycharmProjects/-BorsData-master/data/" + ticker + "/" + ticker +
                                    "Year" + ".csv")
-            quarter = pd.read_csv(
-                filepath_or_buffer="/Users/august/PycharmProjects/-BorsData-master/data/" + ticker + "/" + ticker +
+        quarter = pd.read_csv(
+            filepath_or_buffer="/Users/august/PycharmProjects/-BorsData-master/data/" + ticker + "/" + ticker +
                                    "Quarter" + ".csv")
-            price = pd.read_csv(
-                filepath_or_buffer="/Users/august/PycharmProjects/-BorsData-master/data/" + ticker + "/" + ticker +
+        price = pd.read_csv(
+            filepath_or_buffer="/Users/august/PycharmProjects/-BorsData-master/data/" + ticker + "/" + ticker +
                                    "price" + ".csv")
 
-            read_datasets[ticker + "_year"] = year
-            read_datasets[ticker + "_quarter"] = quarter
-            read_datasets[ticker + "_price"] = price
-    else:
-        indeces_tickers = np.array(None)
-        indeces_sectors = np.array(None)
-        indeces_countries = np.array(None)
-        indeces_markets = np.array(None)
+        read_datasets[ticker + "_year"] = year
+        read_datasets[ticker + "_quarter"] = quarter
+        read_datasets[ticker + "_price"] = price
 
-        if selected_tickers != "all":
-            ticker_bool = ticker_list['Ticker'].isin(selected_tickers)
-            indeces_tickers = np.where(ticker_bool == True)
-
-        if selected_sectors != "all":
-            sectors_bool = ticker_list['Sector'].isin(selected_sectors)
-            indeces_sectors = np.where(sectors_bool == True)
-
-        if selected_countries != "all":
-            countries_bool = ticker_list['Country'].isin(selected_countries)
-            indeces_countries = np.where(countries_bool == True)
-
-        if selected_market != "all":
-            market_bool = ticker_list['Market'].isin(selected_market)
-            indeces_markets = np.where(market_bool == True)
-
-        # Todo this isn't working as expected, returns indecis and should give union
-
-        kept_indices = np.concatenate((indeces_tickers, indeces_sectors, indeces_countries, indeces_markets), axis=None)
-        kept_indices = kept_indices[kept_indices != np.array(None)]
-        kept_indices = np.unique(kept_indices)
-        ticker_subset_selected = ticker_list.iloc[kept_indices]
-
-        for ticker in ticker_subset_selected["Ticker"]:
-            year = pd.read_csv(
-                filepath_or_buffer="/Users/august/PycharmProjects/-BorsData-master/data/" + ticker + "/" + ticker +
-                                   "Year" + ".csv")
-            quarter = pd.read_csv(
-                filepath_or_buffer="/Users/august/PycharmProjects/-BorsData-master/data/" + ticker + "/" + ticker +
-                                   "Quarter" + ".csv")
-            price = pd.read_csv(
-                filepath_or_buffer="/Users/august/PycharmProjects/-BorsData-master/data/" + ticker + "/" + ticker +
-                                   "price" + ".csv")
-            read_datasets[ticker + "_year"] = year
-            read_datasets[ticker + "_quarter"] = quarter
-            read_datasets[ticker + "_price"] = price
     return read_datasets
 
 
