@@ -1,1 +1,1 @@
-mongodb+srv://dbMongo:dbMongo@paaliaq.4ab9p.mongodb.net/bors-data.financials?retryWrites=true&w=majority
+mongodb+srv://august:MoLFaxTzTe4jD8Fv@paaliaq.4ab9p.mongodb.net/bors-data.financials?retryWrites=true&w=majority

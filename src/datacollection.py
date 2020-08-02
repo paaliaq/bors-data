@@ -206,7 +206,7 @@ def download_all_data(read_tickers, ticker_list, ins_id, apikey, current_wd):
     tickers = []
     i = 0
     for item in read_tickers['Ticker']:
-        i = i + 1
+        i += 1
         print('Reading item', i, ",", item)
         try:
             tempObject = CollectTickerData(item, ticker_list=ticker_list, ins_id=ins_id, apikey=apikey)

@@ -4,6 +4,7 @@ import pandas as pd
 import src.datacollection as dc
 import src.mongodbconnection as mdbc
 
+
 def main():
     # Global variables
     current_wd = os.getcwd()
@@ -16,16 +17,15 @@ def main():
 
     tickers = pd.read_csv(filepath_or_buffer=current_wd + "/data/Tickers.csv")
 
-    # Fetch all ticker data
+    # Retrieve all ticker data into memory
     dc.download_all_data(read_tickers=tickers, ticker_list=ticker, ins_id=ins_id,
                          apikey=apikey, current_wd=current_wd)
 
-    readData = dc.read_files_from_disk(ticker_list=tickers, current_wd=current_wd)
+    read_data = dc.read_files_from_disk(ticker_list=tickers, current_wd=current_wd)
 
-    mdbc.upload_to_mongo(tickers, readData)
+    # Upload data to database
+    mdbc.upload_to_mongo(tickers, read_data)
 
 
-# TODO add upload to mongoDB 
 if __name__ == "__main__":
     main()
-
