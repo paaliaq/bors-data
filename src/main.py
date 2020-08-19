@@ -8,7 +8,7 @@ import mongodbconnection as mdbc
 def main():
     # Global variables
     current_wd = os.getcwd()
-    f = open("./apikey.txt", "r")
+    f = open("./src/apikey.txt", "r")
     apikey = f.read()
 
     # Collect ticker metadata

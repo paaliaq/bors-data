@@ -26,7 +26,7 @@ class CollectTickerData:
 
         """Collect Price data """
         temp_price_data = requests.get("https://apiservice.borsdata.se/v1/instruments/" + id_conv(
-            ticker_name, ticker_list, ins_id) + "/stockprices?authKey=" + apikey).json()
+            ticker_list, ticker_name, ins_id) + "/stockprices?authKey=" + apikey).json()
         ticker_price_data = []
         try:
             for item in temp_price_data["stockPricesList"]:
@@ -46,7 +46,7 @@ class CollectTickerData:
 
         """ Year Data """
         temp_year = requests.get(
-            "https://apiservice.borsdata.se/v1/instruments/" + id_conv(ticker_name, ticker_list, ins_id) +
+            "https://apiservice.borsdata.se/v1/instruments/" + id_conv(ticker_list, ticker_name, ins_id) +
             "/reports/year?authKey=" + apikey).json()
         
         year_data = []
@@ -93,7 +93,7 @@ class CollectTickerData:
 
         """Quarter data"""
         temp_quarter = requests.get(
-            "https://apiservice.borsdata.se/v1/instruments/" + id_conv(ticker_name, ticker_list, ins_id) +
+            "https://apiservice.borsdata.se/v1/instruments/" + id_conv(ticker_list, ticker_name, ins_id) +
             "/reports/quarter?authKey=" + apikey).json()
         
         quarter_data = []

@@ -35,7 +35,7 @@ def instrument_dictionary(json_request):
     return names, url, instrument, ticker, sector, market, country, ins_id
 
 
-def id_conv(ticker_list: str, ticker_name: str, ins_id: str):
+def id_conv(ticker_list: list, ticker_name: str, ins_id: list):
     index_temp = ticker_list.index(ticker_name)
     return str(ins_id[index_temp])
 
