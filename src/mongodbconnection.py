@@ -1,7 +1,7 @@
 import pymongo
 
 def upload_to_mongo(tickers, dataset):
-    f = open("./src/mongodbkey.txt", "r")
+    f = open("./mongodbkey.txt", "r")
     mongodbkey = f.read()
 
     client = pymongo.MongoClient(mongodbkey)

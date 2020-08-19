@@ -1,14 +1,14 @@
 import os
 import pandas as pd
 
-import src.datacollection as dc
-import src.mongodbconnection as mdbc
+import datacollection as dc
+import mongodbconnection as mdbc
 
 
 def main():
     # Global variables
     current_wd = os.getcwd()
-    f = open("./src/apikey.txt", "r")
+    f = open("./apikey.txt", "r")
     apikey = f.read()
 
     # Collect ticker metadata

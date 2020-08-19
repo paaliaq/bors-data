@@ -1,10 +1,10 @@
 import requests
 import os
-from src.common import id_conv
-from src.common import instrument_dictionary
-from src.common import get_sector
-from src.common import get_market
-from src.common import get_country
+from common import id_conv
+from common import instrument_dictionary
+from common import get_sector
+from common import get_market
+from common import get_country
 from time import sleep
 import pandas as pd
 
