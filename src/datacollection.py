@@ -10,7 +10,16 @@ import pandas as pd
 
 
 class CollectTickerData:
+    """
+    Class process request into pandas dataframe, for each ticker.
+    """
     def __init__(self, ticker_name, ticker_list, ins_id, apikey):
+        """
+        :type ticker_name: str
+        :type ticker_list: list
+        :type ins_id: str
+        :type apikey: str
+        """
         self.name = ticker_name
 
         sleep(0.5)  # Due to data api time constraint
@@ -131,6 +140,13 @@ class CollectTickerData:
 
 
 def read_files_from_disk(ticker_list, current_wd):  # Ticker, Sector or Market
+    """
+
+    Read downloaded data in to memory as a dictionary of data frames.
+
+    :type ticker_list: pandas data frame
+    :type current_wd: str
+    """
     read_datasets = {}
     for ticker in ticker_list["Ticker"]:
         year = pd.read_csv(
@@ -151,6 +167,13 @@ def read_files_from_disk(ticker_list, current_wd):  # Ticker, Sector or Market
 
 
 def collect_ticker_metadata(apikey, current_wd):
+    """
+
+    Function downloading meta-information of all tickers using api.
+
+    :type apikey: str
+    :type current_wd: str
+    """
     request_instrument = requests.get("https://apiservice.borsdata.se/v1/instruments?authKey=" + apikey)
     data_instruments = request_instrument.json()
 
@@ -203,6 +226,16 @@ def collect_ticker_metadata(apikey, current_wd):
 
 
 def download_all_data(read_tickers, ticker_list, ins_id, apikey, current_wd):
+    """
+
+    Meta-function downloading all the yearly, daily and quarterly data using api.
+
+    :type read_tickers: pandas data frame
+    :type ticker_list: list
+    :type ins_id: str
+    :type apikey: str
+    :type current_wd: str
+    """
     tickers = []
     i = 0
     for item in read_tickers['Ticker']:

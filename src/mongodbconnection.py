@@ -1,6 +1,12 @@
 import pymongo
 
+
 def upload_to_mongo(tickers, dataset):
+    """
+    Upload data in cache to mongoDB.
+    :type tickers: Pandas DataFrame
+    :type dataset: Dictionaries of Pandas DataFrames
+    """
     f = open("./mongodbkey.txt", "r")
     mongodbkey = f.read()
 
@@ -20,11 +26,10 @@ def upload_to_mongo(tickers, dataset):
                      "Quarterly data": dataset[tickers["Ticker"][ticker_index] + "_quarter"].to_dict('records'),
                      "Yearly data": dataset[tickers["Ticker"][ticker_index] + "_year"].to_dict('records')}
         try:
-            # collection.replace_one({"Ticker": tickers["Ticker"][ticker_index]}, new_entry, True)
             collection.insert_one(new_entry)
-            print("Ticker " + str(i) + " of " + str(lengthticks) + " ,  " + tickers["Ticker"][ticker_index] + " Updated")
+            print(
+                "Ticker " + str(i) + " of " + str(lengthticks) + " ,  " + tickers["Ticker"][ticker_index] + " Updated")
         except Exception:
-            print("Ticker " + str(i) + " of " + str(lengthticks) + " ,  " + tickers["Ticker"][ticker_index] + ", not able to update")
+            print("Ticker " + str(i) + " of " + str(lengthticks) + " ,  " + tickers["Ticker"][
+                ticker_index] + ", not able to update")
         i += 1
-
-

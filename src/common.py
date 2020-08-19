@@ -1,5 +1,9 @@
 def instrument_dictionary(json_request):
+    """
+    Decodes the json request and returns separate lists.
 
+    :type json_request: http-request
+    """
     # Create list of tickers with additional data
     names = []
     url = []
@@ -31,26 +35,26 @@ def instrument_dictionary(json_request):
     return names, url, instrument, ticker, sector, market, country, ins_id
 
 
-def id_conv(ticker_name, ticker_list, ins_id):
+def id_conv(ticker_list: str, ticker_name: str, ins_id: str):
     index_temp = ticker_list.index(ticker_name)
     return str(ins_id[index_temp])
 
 
-def get_country(id, countries):
+def get_country(id: str, countries: list):
     for item in countries:
         if item['id'] == id:
             break
     return item['name']
 
 
-def get_market(id, markets):
+def get_market(id: str, markets: list):
     for item in markets:
         if item['id'] == id:
             break
     return item['name']
 
 
-def get_sector(id, sectors):
+def get_sector(id: str, sectors: list):
     for item in sectors:
         if item['id'] == id:
             break
