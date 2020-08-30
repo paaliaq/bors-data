@@ -9,5 +9,5 @@ docker-build:
   before_script:
     - echo $CI_BUILD_TOKEN | docker login -u "$CI_REGISTRY_USER" --password-stdin $CI_REGISTRY
   script:
-    - docker build --pull -t "$CI_REGISTRY_IMAGE" docker/
+    - docker build --pull -t "$CI_REGISTRY_IMAGE" -f docker/Dockerfile .
     - docker push "$CI_REGISTRY_IMAGE"
