@@ -15,5 +15,3 @@ RUN chmod 0644 /etc/cron.d/cronpy
 RUN touch /var/log/cron.log
 
 ENTRYPOINT ["/bin/sh", "/usr/bin/cron.sh"]
-
--data/main.py ") | crontab
