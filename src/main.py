@@ -8,6 +8,7 @@ import mongodbconnection as mdbc
 def main():
     # Global variables
     current_wd = os.getcwd()
+    # TODO: We should remove the api key from the repository and add it to our keepass in googgle drive
     f = open("./src/apikey.txt", "r")
     apikey = f.read()
 
@@ -15,6 +16,7 @@ def main():
     names, url_name, instrument, ticker, sector_id, market_id, country_id, ins_id \
         = dc.collect_ticker_metadata(apikey, current_wd)
 
+    # This folder does not exist in the repository, can we add it?
     tickers = pd.read_csv(filepath_or_buffer=current_wd + "/data/Tickers.csv")
 
     # Retrieve all ticker data into memory

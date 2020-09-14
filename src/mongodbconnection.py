@@ -7,6 +7,8 @@ def upload_to_mongo(tickers, dataset):
     :type tickers: Pandas DataFrame
     :type dataset: Dictionaries of Pandas DataFrames
     """
+    # TODO: This one (the path) needs to be read from either a configuration file or
+    # an environment variable
     f = open("./mongodbkey.txt", "r")
     mongodbkey = f.read()
 
