@@ -2,6 +2,9 @@ stages:
   - build
   - test
 
+include:
+  - template: Code-Quality.gitlab-ci.yml
+
 docker-build:
   image: docker:latest
   stage: build
