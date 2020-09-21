@@ -1,5 +1,6 @@
 stages:
   - build
+  - test
 
 docker-build:
   image: docker:latest
@@ -11,3 +12,8 @@ docker-build:
   script:
     - docker build --pull -t "$CI_REGISTRY_IMAGE" -f docker/Dockerfile .
     - docker push "$CI_REGISTRY_IMAGE"
+
+code_quality:
+  stage: test
+  artifacts:
+    paths: [gl-code-quality-report.json]
