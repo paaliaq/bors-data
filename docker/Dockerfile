@@ -15,3 +15,10 @@ RUN chmod 0644 /etc/cron.d/cronpy
 RUN touch /var/log/cron.log
 
 ENTRYPOINT ["/bin/sh", "/usr/bin/cron.sh"]
+
+# TODO
+# Default takes this configuration (with DB string and so on), however you like it
+# During testing and deployment I need to pass a different one with the actual credentials
+# thus your application needs to read that from somewhere. If you don't like files,
+# environment variables are also fine
+#CMD ["config.json"]
