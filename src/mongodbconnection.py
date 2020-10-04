@@ -1,19 +1,18 @@
 import pymongo
 
 
-def upload_to_mongo(tickers, dataset):
+def upload_to_mongo(tickers, dataset, mongodbkey, mongodbDB, mongodbColl):
     """
     Upload data in cache to mongoDB.
     :type tickers: Pandas DataFrame
     :type dataset: Dictionaries of Pandas DataFrames
+    :type mongodbkey: str
+    :type mongodbDB: str
+    :type mongodbColl: str
     """
-    # TODO: This one (the path) needs to be read from either a configuration file or
-    # an environment variable
-    f = open("./mongodbkey.txt", "r")
-    mongodbkey = f.read()
 
-    client = pymongo.MongoClient(mongodbkey)
-    collection = client["bors-data"]["financials"]
+    collection = pymongo.MongoClient(mongodbkey)[mongodbDB][mongodbColl]
+
     collection.delete_many({})  # Clear database as inserting each entry is faster than finding and updating
 
     i = 0

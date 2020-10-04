@@ -1,33 +1,45 @@
 import os
 import pandas as pd
+import json
+import sys
 
 import datacollection as dc
 import mongodbconnection as mdbc
 
 
 def main():
+
+    # Get config path
+    if len(sys.argv[1:]) >= 1:
+        config_name = sys.argv[1]
+    else:
+        config_name = "config.dev.json"
+
+    # Extract variables from config
+    with open(os.path.join(os.path.dirname(__file__), config_name)) as config_file:
+        config = json.load(config_file)
+
     # Global variables
     current_wd = os.getcwd()
-    # TODO: We should remove the api key from the repository and add it to our keepass in googgle drive
-    f = open("./src/apikey.txt", "r")
-    apikey = f.read()
 
     # Collect ticker metadata
     names, url_name, instrument, ticker, sector_id, market_id, country_id, ins_id \
-        = dc.collect_ticker_metadata(apikey, current_wd)
+        = dc.collect_ticker_metadata(config["BORSDATA_KEY"], current_wd)
 
     # This folder does not exist in the repository, can we add it?
     tickers = pd.read_csv(filepath_or_buffer=current_wd + "/data/Tickers.csv")
 
     # Retrieve all ticker data into memory
     dc.download_all_data(read_tickers=tickers, ticker_list=ticker, ins_id=ins_id,
-                         apikey=apikey, current_wd=current_wd)
+                         apikey=config["BORSDATA_KEY"], current_wd=current_wd)
 
     read_data = dc.read_files_from_disk(ticker_list=tickers, current_wd=current_wd)
 
     # Upload data to database
-    mdbc.upload_to_mongo(tickers, read_data)
-
+    mdbc.upload_to_mongo(tickers, read_data,
+                         config["MONGODB_KEY"],
+                         config["MONGODB_DATABASE"],
+                         config["MONGODB_COLLECTION"])
 
 if __name__ == "__main__":
     main()

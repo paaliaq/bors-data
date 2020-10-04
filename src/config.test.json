@@ -1,0 +1,4 @@
+{"BORSDATA_KEY": "3212acffaa474f13a15f5811e567231d",
+  "MONGODB_KEY": "mongodb://mongoc:27017",
+  "MONGODB_DATABASE": "bors-data",
+  "MONGODB_COLLECTION": "financials"}
