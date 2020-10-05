@@ -14,7 +14,7 @@ include:
 variables:
   CONTAINER_DEV_IMAGE: $CI_REGISTRY_IMAGE:build-$CI_COMMIT_SHA
   CONTAINER_RELEASE_IMAGE: $CI_REGISTRY_IMAGE:$CI_COMMIT_TAG
-  GITLAB_PAALIAQ_RUN_ONCE: "true"
+  PAALIAQ_RUN_ONCE: "true"
 
 before_script:
   - echo $CI_BUILD_TOKEN | docker login -u "$CI_REGISTRY_USER" --password-stdin $CI_REGISTRY
@@ -62,7 +62,7 @@ application-test-dev:
     - PAALIAQ_RUN_ONCE=$GITLAB_PAALIAQ_RUN_ONCE
     - echo $PAALIAQ_RUN_ONCE
     - docker network create testnetwork 
-    - docker run -e PAALIAQ_RUN_ONCE=$GITLAB_PAALIAQ_RUN_ONCE -d --net testnetwork --name mongoc mongo
+    - docker run -e PAALIAQ_RUN_ONCE="$PAALIAQ_RUN_ONCE" -d --net testnetwork --name mongoc mongo
     - docker run --net testnetwork "$CONTAINER_DEV_IMAGE" src/config.test.json
   rules:
     - if: '$CI_COMMIT_TAG == null' 
