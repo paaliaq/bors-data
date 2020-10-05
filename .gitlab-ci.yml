@@ -6,7 +6,6 @@ stages:
   - build
   - test
   - publish
-  - deploy
 
 include:
   - template: Code-Quality.gitlab-ci.yml
@@ -31,8 +30,8 @@ application-test-release:
   stage: test
   script:
     - docker network create testnetwork 
-    - docker run -e PAALIAQ_RUN_ONCE=$GITLAB_PAALIAQ_RUN_ONCE -d --net testnetwork --name mongoc mongo
-    - docker run --net testnetwork "$CONTAINER_DEV_IMAGE" src/config.test.json
+    - docker run -d --net testnetwork --name mongoc mongo
+    - docker run -e PAALIAQ_RUN_ONCE --net testnetwork "$CONTAINER_DEV_IMAGE" src/config.test.json
   rules:
     - if: '$CI_COMMIT_TAG' 
 
@@ -58,12 +57,9 @@ application-build-dev:
 application-test-dev:
   stage: test
   script:
-    - echo $GITLAB_PAALIAQ_RUN_ONCE
-    - PAALIAQ_RUN_ONCE=$GITLAB_PAALIAQ_RUN_ONCE
-    - echo $PAALIAQ_RUN_ONCE
     - docker network create testnetwork 
-    - docker run -e PAALIAQ_RUN_ONCE -d --net testnetwork --name mongoc mongo
-    - docker run --net testnetwork "$CONTAINER_DEV_IMAGE" src/config.test.json
+    - docker run -d --net testnetwork --name mongoc mongo
+    - docker run -e PAALIAQ_RUN_ONCE --net testnetwork "$CONTAINER_DEV_IMAGE" src/config.test.json
   rules:
     - if: '$CI_COMMIT_TAG == null' 
 
