@@ -18,6 +18,7 @@ variables:
 
 before_script:
   - echo $CI_BUILD_TOKEN | docker login -u "$CI_REGISTRY_USER" --password-stdin $CI_REGISTRY
+  - PAALIAQ_RUN_ONCE=$PAALIAQ_RUN_ONCE
 
 application-build-release:
   stage: build
