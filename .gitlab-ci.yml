@@ -21,7 +21,7 @@ before_script:
 application-build-release:
   stage: build
   script:
-    - docker build -t "$CONTAINER_DEV_IMAGE" docker/
+    - docker build -t "$CONTAINER_DEV_IMAGE" -f docker/Dockerfile .
     - docker push "$CONTAINER_DEV_IMAGE"
   rules:
     - if: '$CI_COMMIT_TAG' 
@@ -49,7 +49,7 @@ application-build-dev:
   script:
     - echo $CI_COMMIT_TAG
     - echo $CI_COMMIT_REF_NAME
-    - docker build -t "$CONTAINER_DEV_IMAGE" docker/
+    - docker build -t "$CONTAINER_DEV_IMAGE" -f docker/Dockerfile .
     - docker push "$CONTAINER_DEV_IMAGE"
   rules:
     - if: '$CI_COMMIT_TAG == null' 
