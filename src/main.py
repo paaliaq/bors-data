@@ -19,6 +19,8 @@ def main():
     with open(os.path.join(os.path.dirname(__file__), config_name)) as config_file:
         config = json.load(config_file)
 
+    print(config["MONGODB_KEY"])
+
     # Global variables
     current_wd = os.getcwd()
 
@@ -37,7 +39,8 @@ def main():
     dc.download_all_data(read_tickers=tickers, ticker_list=ticker, ins_id=ins_id,
                          apikey=config["BORSDATA_KEY"], current_wd=current_wd)
 
-    read_data = dc.read_files_from_disk(ticker_list=tickers, current_wd=current_wd)
+    read_data = dc.read_files_from_disk(
+        ticker_list=tickers, current_wd=current_wd)
 
     # Upload data to database
     mdbc.upload_to_mongo(tickers, read_data,
