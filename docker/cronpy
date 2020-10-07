@@ -1,1 +1,1 @@
-0 0 * * * root /bors-data/main.py >> /bors-data/cron.log 2>&1
+0 0 * * * root python /bors-data/main.py >> /bors-data/cron.log 2>&1
