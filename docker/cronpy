@@ -1,1 +1,0 @@
-*/5 * * * * root python /bors-data/main.py config.json >> /bors-data/cron.log 2>&1

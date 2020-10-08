@@ -3,18 +3,9 @@ WORKDIR /bors-data
 ADD ./src .
 COPY /docker/requirements.txt requirements.txt
 RUN pip install -r requirements.txt
-RUN apt-get update
-RUN apt-get -y install -qq --force-yes cron
 
-ADD /docker/cron.sh /usr/bin/cron.sh
-RUN chmod +x /usr/bin/cron.sh
+ADD /docker/run.sh .
+RUN chmod +x run.sh
 
-ADD /docker/cronpy /etc/cron.d/cronpy
-RUN chmod 0644 /etc/cron.d/cronpy
-
-RUN touch /var/log/cron.log
-
-ENTRYPOINT ["/bin/sh", "/usr/bin/cron.sh"]
+ENTRYPOINT ["/bin/bash", "run.sh"]
 CMD ["config.json"]
-
-
