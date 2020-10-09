@@ -19,8 +19,6 @@ def main():
     with open(os.path.join(os.path.dirname(__file__), config_name)) as config_file:
         config = json.load(config_file)
 
-    print(config["MONGODB_KEY"])
-
     # Global variables
     current_wd = os.getcwd()
 
@@ -32,6 +30,7 @@ def main():
 
     # If test take subset
     if config["TEST_MODE"] == "yes":
+        print("Test mode set, using subset")
         tickers = tickers.iloc[0:50]
         ticker = ticker[0:50]
 
