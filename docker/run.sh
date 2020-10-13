@@ -1,6 +1,6 @@
 #!/bin/bash
 
-sleeptime=1440
+sleeptime=86400
 
 function finish() {
     echo "\nBye."
