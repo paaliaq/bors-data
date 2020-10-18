@@ -31,6 +31,11 @@ while :; do
 
     echo "Running in loop. Printing command line arguments:"
     echo "$@"
+    echo "Sleeping for ${sleeptime}s"
+
+    sleep ${sleeptime} &
+    wait
+
     echo "Running script now."
 
     python main.py $@
@@ -39,10 +44,5 @@ while :; do
     echo "Error occured, ending loop."
         exit 1
     fi
-
-    echo "Sleeping for ${sleeptime}s"
-
-    sleep ${sleeptime} &
-    wait
 
 done
