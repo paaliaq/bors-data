@@ -174,7 +174,7 @@ def collect_ticker_metadata(apikey, current_wd):
     :type apikey: str
     :type current_wd: str
     """
-    
+
     print("Start retrieving meta-data")
 
     request_instrument = requests.get("https://apiservice.borsdata.se/v1/instruments?authKey=" + apikey)

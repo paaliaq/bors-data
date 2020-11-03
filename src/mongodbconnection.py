@@ -23,9 +23,9 @@ def upload_to_mongo(tickers, dataset, mongodbkey, mongodbDB, mongodbColl):
                      "Sector": tickers["Sector"][ticker_index],
                      "Market": tickers["Market"][ticker_index],
                      "Country": tickers["Country"][ticker_index],
-                     "Daily data": dataset[tickers["Ticker"][ticker_index] + "_price"].to_dict('records'),
-                     "Quarterly data": dataset[tickers["Ticker"][ticker_index] + "_quarter"].to_dict('records'),
-                     "Yearly data": dataset[tickers["Ticker"][ticker_index] + "_year"].to_dict('records')}
+                     "Daily_data": dataset[tickers["Ticker"][ticker_index] + "_price"].to_dict('records'),
+                     "Quarterly_data": dataset[tickers["Ticker"][ticker_index] + "_quarter"].to_dict('records'),
+                     "Yearly_data": dataset[tickers["Ticker"][ticker_index] + "_year"].to_dict('records')}
         try:
             collection.insert_one(new_entry)
             print(
