@@ -154,33 +154,6 @@ def read_csv_from_disk(ticker_name, current_wd):  # Ticker, Sector or Market
     return year, quarter, price
 
 
-def read_files_from_disk(ticker_list, current_wd):  # Ticker, Sector or Market
-    """
-
-    Read downloaded data in to memory as a dictionary of data frames.
-
-    :type ticker_list: pandas data frame
-    :type current_wd: str
-    """
-    read_datasets = {}
-    for ticker in ticker_list["Ticker"]:
-        year = pd.read_csv(
-            filepath_or_buffer=current_wd + "/data/" + ticker + "/" + ticker +
-                                   "Year" + ".csv")
-        quarter = pd.read_csv(
-            filepath_or_buffer=current_wd + "/data/" + ticker + "/" + ticker +
-                                   "Quarter" + ".csv")
-        price = pd.read_csv(
-            filepath_or_buffer=current_wd + "/data/" + ticker + "/" + ticker +
-                                   "price" + ".csv")
-
-        read_datasets[ticker + "_year"] = year
-        read_datasets[ticker + "_quarter"] = quarter
-        read_datasets[ticker + "_price"] = price
-
-    return read_datasets
-
-
 def collect_ticker_metadata(apikey, current_wd):
     """
 

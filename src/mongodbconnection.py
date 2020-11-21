@@ -9,8 +9,6 @@ def upload_to_mongo(ticker_name, inserted_data, mongodbkey, mongodbDB):
     :type mongodbDB: str
     """
 
-    print("test 1")
-
     db = pymongo.MongoClient(mongodbkey)[mongodbDB]
 
     collection = db[ticker_name]
@@ -18,7 +16,7 @@ def upload_to_mongo(ticker_name, inserted_data, mongodbkey, mongodbDB):
     try:
         db.create_collection(ticker_name)
     except Exception:
-        print("Collection creation failed failed for ", ticker_name)
+        print("Collection already exists, ", ticker_name)
 
     try:
         collection.delete_many({})  # Clear database as inserting each entry is faster than finding and updating

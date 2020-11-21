@@ -1,6 +1,6 @@
 {"BORSDATA_KEY": "3212acffaa474f13a15f5811e567231d",
   "MONGODB_KEY": "mongodb://mongoc:27017",
-  "MONGODB_DATABASE_YEARLY": "bors-data-yearly-test",
-  "MONGODB_DATABASE_QUARTERLY": "bors-data-quarterly-test",
-  "MONGODB_DATABASE_DAILY": "bors-data-daily-test",
+  "MONGODB_DATABASE_YEARLY": "bors-data-yearly",
+  "MONGODB_DATABASE_QUARTERLY": "bors-data-quarterly",
+  "MONGODB_DATABASE_DAILY": "bors-data-daily",
   "TEST_MODE": "yes"}
