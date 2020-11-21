@@ -138,6 +138,21 @@ class CollectTickerData:
         except Exception:
             print("couldn't download quarter data for stock " + ticker_name)
 
+def read_csv_from_disk(ticker_name, current_wd):  # Ticker, Sector or Market
+    """
+
+    Read downloaded data in to memory as data frames.
+
+    :type ticker_list: pandas data frame
+    :type current_wd: str
+    """
+
+    year = pd.read_csv(filepath_or_buffer=current_wd + "/data/" + ticker_name + "/" + ticker_name + "Year" + ".csv")
+    quarter = pd.read_csv(filepath_or_buffer=current_wd + "/data/" + ticker_name + "/" + ticker_name + "Quarter" + ".csv")
+    price = pd.read_csv(filepath_or_buffer=current_wd + "/data/" + ticker_name + "/" + ticker_name + "price" + ".csv")
+
+    return year, quarter, price
+
 
 def read_files_from_disk(ticker_list, current_wd):  # Ticker, Sector or Market
     """

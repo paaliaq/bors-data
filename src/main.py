@@ -34,18 +34,20 @@ def main():
         tickers = tickers.iloc[0:50]
         ticker = ticker[0:50]
 
-    # Retrieve all ticker data into memory from download
+    # Retrieve all ticker data into disk from download
     dc.download_all_data(read_tickers=tickers, ticker_list=ticker, ins_id=ins_id,
                          apikey=config["BORSDATA_KEY"], current_wd=current_wd)
 
-    read_data = dc.read_files_from_disk(
-        ticker_list=tickers, current_wd=current_wd)
+    for ticker_iter in tickers["Ticker"]:
+        yearly, quarterly, daily = dc.read_csv_from_disk(ticker_iter, current_wd)  # Ticker, Sector or Market
 
-    # Upload data to database
-    mdbc.upload_to_mongo(tickers, read_data,
-                         config["MONGODB_KEY"],
-                         config["MONGODB_DATABASE"],
-                         config["MONGODB_COLLECTION"])
+        # Upload data to database
+        mdbc.upload_to_mongo(ticker_iter, yearly.to_dict('records'), config["MONGODB_KEY"],
+                             config["MONGODB_DATABASE_YEARLY"])
+        mdbc.upload_to_mongo(ticker_iter, quarterly.to_dict('records'), config["MONGODB_KEY"],
+                             config["MONGODB_DATABASE_QUARTERLY"])
+        mdbc.upload_to_mongo(ticker_iter, daily.to_dict('records'), config["MONGODB_KEY"],
+                             config["MONGODB_DATABASE_DAILY"])
 
 
 if __name__ == "__main__":
