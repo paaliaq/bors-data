@@ -31,8 +31,8 @@ def main():
     # If test take subset
     if config["TEST_MODE"] == "yes":
         print("Test mode set, using subset")
-        tickers = tickers.iloc[0:50]
-        ticker = ticker[0:50]
+        tickers = tickers.iloc[0:10]
+        ticker = ticker[0:10]
 
     # Retrieve all ticker data into disk from download
     dc.download_all_data(read_tickers=tickers, ticker_list=ticker, ins_id=ins_id,

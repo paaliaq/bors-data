@@ -17,15 +17,15 @@ def upload_to_mongo(ticker_name, inserted_data, mongodbkey, mongodbDB):
 
     try:
         db.create_collection(ticker_name)
-    except pymongo.errors.PyMongoError:
+    except Exception:
         print("Collection creation failed failed for ", ticker_name)
 
     try:
         collection.delete_many({})  # Clear database as inserting each entry is faster than finding and updating
-    except pymongo.errors.PyMongoError:
+    except Exception:
         print("Delete failed for ", ticker_name)
 
     try:
         collection.insert_many(inserted_data)
-    except pymongo.errors.PyMongoError:
+    except Exception:
         print("Insert failed for ", ticker_name)
