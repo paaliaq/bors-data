@@ -38,7 +38,10 @@ def main():
     dc.download_all_data(read_tickers=tickers, ticker_list=ticker, ins_id=ins_id,
                          apikey=config["BORSDATA_KEY"], current_wd=current_wd)
 
+    i = 0
     for ticker_iter in tickers["Ticker"]:
+        print("Uploading ticker:", ticker_iter, ", ", i, "of", len(tickers["Ticker"]))
+        i += 1
         yearly, quarterly, daily = dc.read_csv_from_disk(ticker_iter, current_wd)  # Ticker, Sector or Market
 
         # Upload data to database
