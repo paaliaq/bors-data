@@ -47,8 +47,10 @@ def main():
         # Upload data to database
         mdbc.upload_to_mongo(ticker_name=ticker_iter, inserted_data=yearly.to_dict('records'),
                              mongodbkey=config["MONGODB_KEY"], mongodbDB=config["MONGODB_DATABASE_YEARLY"])
+
         mdbc.upload_to_mongo(ticker_name=ticker_iter, inserted_data=quarterly.to_dict('records'),
                              mongodbkey=config["MONGODB_KEY"], mongodbDB=config["MONGODB_DATABASE_QUARTERLY"])
+
         mdbc.upload_to_mongo(ticker_name=ticker_iter, inserted_data=daily.to_dict('records'),
                              mongodbkey=config["MONGODB_KEY"], mongodbDB=config["MONGODB_DATABASE_DAILY"])
 

@@ -9,6 +9,8 @@ def upload_to_mongo(ticker_name, inserted_data, mongodbkey, mongodbDB):
     :type mongodbDB: str
     """
 
+    print("test 1")
+
     db = pymongo.MongoClient(mongodbkey)[mongodbDB]
 
     collection = db[ticker_name]
@@ -27,6 +29,3 @@ def upload_to_mongo(ticker_name, inserted_data, mongodbkey, mongodbDB):
         collection.insert_many(inserted_data)
     except pymongo.errors.PyMongoError:
         print("Insert failed for ", ticker_name)
-
-
-
