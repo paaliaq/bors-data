@@ -42,7 +42,7 @@ def main():
     for ticker_iter in tickers["Ticker"]:
         print("Uploading ticker:", ticker_iter, ", ", i, "of", len(tickers["Ticker"]))
         i += 1
-        yearly, quarterly, daily = dc.read_csv_from_disk(ticker_iter, current_wd)  # Ticker, Sector or Market
+        yearly, quarterly, daily = dc.read_csv_from_disk(ticker_iter, current_wd)
 
         # Upload data to database
         mdbc.upload_to_mongo(ticker_name=ticker_iter, inserted_data=yearly.to_dict('records'),
