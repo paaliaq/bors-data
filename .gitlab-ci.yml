@@ -1,11 +1,11 @@
-image: python:3.8
+image: docker:latest
 services:
   - docker:dind
 
 stages:
   - lint
-  - build
   - test
+  - build
   - publish
 
 include:
@@ -70,36 +70,42 @@ code_quality:
     paths: [gl-code-quality-report.json]
 
 application-lint-black:
+  image: python:3.8
   stage: lint
   script:
     - pip install black
     - black --check src/
 
 application-lint-flake8:
+  image: python:3.8
   stage: lint
   script:
     - pip install flake8 pep8-naming
     - flake8 src/
 
 application-lint-mypy:
+  image: python:3.8
   stage: lint
   script:
     - pip install mypy
     - mypy src/
 
 application-lint-pydocstyle:
+  image: python:3.8
   stage: lint
   script:
     - pip install pydocstyle
     - pydocstyle src/
 
 application-lint-darglint:
+  image: python:3.8
   stage: lint
   script:
     - pip install darglint
     - darglint src/
 
 code_quality:
+  image: python:3.8
   stage: lint
   artifacts:
     paths: [gl-code-quality-report.json]
