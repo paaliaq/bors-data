@@ -105,7 +105,6 @@ application-lint-darglint:
     - darglint src/
 
 code_quality:
-  image: python:3.8
-  stage: lint
+  stage: test
   artifacts:
     paths: [gl-code-quality-report.json]
