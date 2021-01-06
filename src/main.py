@@ -44,15 +44,31 @@ def main():
         i += 1
         yearly, quarterly, daily = dc.read_csv_from_disk(ticker_iter, current_wd)
 
+        yearly["report_End_Date"] = pd.to_datetime(
+            yearly["report_End_Date"].str.replace("T", " "),
+            format='%Y-%m-%d %H:%M:%S')
+
+        quarterly["report_End_Date"] = pd.to_datetime(
+            quarterly["report_End_Date"].str.replace("T", " "),
+            format='%Y-%m-%d %H:%M:%S')
+
+        daily["Time"] = pd.to_datetime(daily["Time"], format='%Y-%m-%d')
+
         # Upload data to database
-        mdbc.upload_to_mongo(ticker_name=ticker_iter, inserted_data=yearly.to_dict('records'),
-                             mongodbkey=config["MONGODB_KEY"], mongodbDB=config["MONGODB_DATABASE_YEARLY"])
+        mdbc.upload_to_mongo(ticker_name=ticker_iter,
+                             inserted_data=yearly.to_dict('records'),
+                             mongodbkey=config["MONGODB_KEY"],
+                             mongodbDB=config["MONGODB_DATABASE_YEARLY"])
 
-        mdbc.upload_to_mongo(ticker_name=ticker_iter, inserted_data=quarterly.to_dict('records'),
-                             mongodbkey=config["MONGODB_KEY"], mongodbDB=config["MONGODB_DATABASE_QUARTERLY"])
+        mdbc.upload_to_mongo(ticker_name=ticker_iter,
+                             inserted_data=quarterly.to_dict('records'),
+                             mongodbkey=config["MONGODB_KEY"],
+                             mongodbDB=config["MONGODB_DATABASE_QUARTERLY"])
 
-        mdbc.upload_to_mongo(ticker_name=ticker_iter, inserted_data=daily.to_dict('records'),
-                             mongodbkey=config["MONGODB_KEY"], mongodbDB=config["MONGODB_DATABASE_DAILY"])
+        mdbc.upload_to_mongo(ticker_name=ticker_iter,
+                             inserted_data=daily.to_dict('records'),
+                             mongodbkey=config["MONGODB_KEY"],
+                             mongodbDB=config["MONGODB_DATABASE_DAILY"])
 
 
 if __name__ == "__main__":
