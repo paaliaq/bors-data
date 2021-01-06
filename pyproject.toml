@@ -5,7 +5,7 @@ description = ""
 authors = ["August Andersen"]
 
 [tool.poetry.dependencies]
-python = "^3.8"
+python = "^3.7"
 pandas = "^1.0"
 numpy = "^v1.19"
 pymongo = "^3.11"

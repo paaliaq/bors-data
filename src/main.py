@@ -1,3 +1,4 @@
+"""Main file for the whole collection and uploading sequence."""
 import os
 import pandas as pd
 import json
@@ -7,10 +8,9 @@ import datacollection as dc
 import mongodbconnection as mdbc
 
 
-def main():
-
-    # Get config path
-    if len(sys.argv[1:]) >= 1:
+def main() -> None:
+    """Main function running the whole collection and uploading sequence."""
+    if len(sys.argv[1:]) >= 1:  # Get config path
         config_name = sys.argv[1]
     else:
         config_name = "config.dev.json"
