@@ -3,9 +3,9 @@ services:
   - docker:dind
 
 stages:
-  - lint
-  - test
   - build
+  - test
+  - lint
   - publish
 
 include:
