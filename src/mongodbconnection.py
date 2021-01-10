@@ -1,15 +1,17 @@
+"""Used for uploading ticker data from disk to mongoDB."""
 import pymongo
+import pandas as pd
 
-def upload_to_mongo(ticker_name, inserted_data, mongodbkey, mongodbDB):
-    """
-    Upload data in cache to mongoDB.
-    :type ticker_name: string
-    :type inserted_data: Pandas DataFrames
-    :type mongodbkey: str
-    :type mongodbDB: str
-    """
 
-    db = pymongo.MongoClient(mongodbkey)[mongodbDB]
+def upload_to_mongo(
+    ticker_name: str, inserted_data: pd.DataFrame, mongodb_key: str, mongodb: str
+) -> None:
+    """Function used for uploading ticker from disk to mongoDB.
+
+    Requires Ticker/collection name, inserted data and database with connection details.
+    as input.
+    """
+    db = pymongo.MongoClient(mongodb_key)[mongodb]
 
     collection = db[ticker_name]
 
@@ -19,7 +21,7 @@ def upload_to_mongo(ticker_name, inserted_data, mongodbkey, mongodbDB):
         print("Collection already exists, ", ticker_name)
 
     try:
-        collection.delete_many({})  # Clear database as inserting each entry is faster than finding and updating
+        collection.delete_many({})  # Clear database, faster than finding and updating
     except Exception:
         print("Delete failed for ", ticker_name)
 

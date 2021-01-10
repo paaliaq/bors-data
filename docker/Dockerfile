@@ -1,4 +1,4 @@
-FROM python:3.6-stretch
+FROM python:3.8
 WORKDIR /bors-data
 ADD ./src .
 COPY /docker/requirements.txt requirements.txt
