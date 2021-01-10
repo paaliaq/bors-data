@@ -72,22 +72,22 @@ def main() -> None:
         mdbc.upload_to_mongo(
             ticker_name=ticker_iter,
             inserted_data=yearly.to_dict("records"),
-            mongodbkey=config["MONGODB_KEY"],
-            mongodbDB=config["MONGODB_DATABASE_YEARLY"],
+            mongodb_key=config["MONGODB_KEY"],
+            mongodb=config["MONGODB_DATABASE_YEARLY"],
         )
 
         mdbc.upload_to_mongo(
             ticker_name=ticker_iter,
             inserted_data=quarterly.to_dict("records"),
-            mongodbkey=config["MONGODB_KEY"],
-            mongodbDB=config["MONGODB_DATABASE_QUARTERLY"],
+            mongodb_key=config["MONGODB_KEY"],
+            mongodb=config["MONGODB_DATABASE_QUARTERLY"],
         )
 
         mdbc.upload_to_mongo(
             ticker_name=ticker_iter,
             inserted_data=daily.to_dict("records"),
-            mongodbkey=config["MONGODB_KEY"],
-            mongodbDB=config["MONGODB_DATABASE_DAILY"],
+            mongodb_key=config["MONGODB_KEY"],
+            mongodb=config["MONGODB_DATABASE_DAILY"],
         )
 
 
