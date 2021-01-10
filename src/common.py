@@ -16,15 +16,15 @@ def instrument_dictionary(
     country = []
     ins_id = []
 
-    for tickIterator in json_request["instruments"]:
-        temp1 = tickIterator["name"]
-        temp2 = tickIterator["urlName"]
-        temp3 = tickIterator["instrument"]
-        temp4 = tickIterator["ticker"]
-        temp5 = tickIterator["sectorId"]
-        temp6 = tickIterator["marketId"]
-        temp7 = tickIterator["countryId"]
-        temp8 = tickIterator["insId"]
+    for tick_iterator in json_request["instruments"]:
+        temp1 = tick_iterator["name"]
+        temp2 = tick_iterator["urlName"]
+        temp3 = tick_iterator["instrument"]
+        temp4 = tick_iterator["ticker"]
+        temp5 = tick_iterator["sectorId"]
+        temp6 = tick_iterator["marketId"]
+        temp7 = tick_iterator["countryId"]
+        temp8 = tick_iterator["insId"]
         names.append(temp1)
         url.append(temp2)
         instrument.append(temp3)

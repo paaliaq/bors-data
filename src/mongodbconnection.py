@@ -4,14 +4,14 @@ import pandas as pd
 
 
 def upload_to_mongo(
-    ticker_name: str, inserted_data: pd.DataFrame, mongodbkey: str, mongodbDB: str
+    ticker_name: str, inserted_data: pd.DataFrame, mongodbkey: str, mongod_db: str
 ) -> None:
     """Function used for uploading ticker from disk to mongoDB.
 
     Requires Ticker/collection name, inserted data and database with connection details.
     as input.
     """
-    db = pymongo.MongoClient(mongodbkey)[mongodbDB]
+    db = pymongo.MongoClient(mongodbkey)[mongod_db]
 
     collection = db[ticker_name]
 

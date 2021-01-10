@@ -247,8 +247,7 @@ def read_csv_from_disk(
         + ticker_name
         + "/"
         + ticker_name
-        + "Quarter"
-        + ".csv"
+        + "Quarter.csv"
     )
     price = pd.read_csv(
         filepath_or_buffer=current_wd
@@ -256,8 +255,7 @@ def read_csv_from_disk(
         + ticker_name
         + "/"
         + ticker_name
-        + "price"
-        + ".csv"
+        + "price.csv"
     )
 
     return year, quarter, price
@@ -371,10 +369,10 @@ def download_all_data(
         i += 1
         print("Reading item", i, ",", item)
         try:
-            tempObject = CollectTickerData(
+            temp_object = CollectTickerData(
                 item, ticker_list=ticker_list, ins_id=ins_id, apikey=apikey
             )
-            tickers.append(tempObject)
+            tickers.append(temp_object)
         except Exception:
             print(item, "failed collection")
         try:
@@ -383,7 +381,7 @@ def download_all_data(
         except Exception:
             print(item, "folder already exists")
         try:
-            tempObject.priceData.to_csv(
+            temp_object.priceData.to_csv(
                 path_or_buf=current_wd + "/data/" + item + "/" + item + "price.csv",
                 sep=",",
                 header=True,
@@ -394,7 +392,7 @@ def download_all_data(
         except Exception:
             print(item, "couldn't write price data")
         try:
-            tempObject.quarterData.to_csv(
+            temp_object.quarterData.to_csv(
                 path_or_buf=current_wd + "/data/" + item + "/" + item + "Quarter.csv",
                 sep=",",
                 header=True,
@@ -405,7 +403,7 @@ def download_all_data(
         except Exception:
             print(item, "couldn't write quarter data")
         try:
-            tempObject.yearData.to_csv(
+            temp_object.yearData.to_csv(
                 path_or_buf=current_wd + "/data/" + item + "/" + item + "Year.csv",
                 sep=",",
                 header=True,

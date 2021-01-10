@@ -5,12 +5,13 @@ description = ""
 authors = ["August Andersen"]
 
 [tool.poetry.dependencies]
-python = "^3.7"
+python = "^3.8"
 pandas = "^1.0"
 numpy = "^v1.19"
 pymongo = "^3.11"
 requests = "*"
 pytz = "*"
+importlib-metadata = {version = "^0.23", python = "<=3.8"}
 
 [tool.poetry.dev-dependencies]
 pytest = "*"
