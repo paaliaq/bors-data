@@ -1,11 +1,16 @@
 """Main file for the whole collection and uploading sequence."""
-import os
-import pandas as pd
 import json
+import logging
+import os
 import sys
+
+import alnair
+import pandas as pd
 
 import datacollection as dc
 import mongodbconnection as mdbc
+
+logger = logging.getLogger(__name__)
 
 
 def main() -> None:
@@ -15,11 +20,25 @@ def main() -> None:
     else:
         config_name = "config.dev.json"
 
-    # Extract variables from config
+        # Extract variables from config
     with open(os.path.join(os.path.dirname(__file__), config_name)) as config_file:
         config = json.load(config_file)
 
-    # Global variables
+    # Initialize logging services
+    alnair.initialize("bors-data-data-fetcher")
+    alnair.attach_console_handler()
+    alnair.attach_mattermost_handler(
+        config["MATTERMOST"], channel="logging", log_level=logging.ERROR
+    )
+    alnair.attach_mongodb_handler(
+        connection_string=config["MONGODB_KEY"], log_level=logging.WARNING
+    )
+
+    alnair.start()
+
+    logger.info("Database update started.")
+
+    # Import path
     current_wd = os.getcwd()
 
     # Collect ticker metadata
@@ -38,7 +57,7 @@ def main() -> None:
 
     # If test take subset
     if config["TEST_MODE"] == "yes":
-        print("Test mode set, using subset")
+        logger.info(msg="Test mode set, using subset")
         tickers = tickers.iloc[0:10]
         ticker = ticker[0:10]
 
@@ -53,20 +72,16 @@ def main() -> None:
 
     i = 0
     for ticker_iter in tickers["Ticker"]:
-        print("Uploading ticker:", ticker_iter, ", ", i, "of", len(tickers["Ticker"]))
+        logger.info(
+            msg="Uploading ticker:"
+            + str(ticker_iter)
+            + ", "
+            + str(i)
+            + "of"
+            + str(len(tickers["Ticker"]))
+        )
         i += 1
         yearly, quarterly, daily = dc.read_csv_from_disk(ticker_iter, current_wd)
-
-        yearly["report_End_Date"] = pd.to_datetime(
-            yearly["report_End_Date"].str.replace("T", " "), format="%Y-%m-%d %H:%M:%S"
-        )
-
-        quarterly["report_End_Date"] = pd.to_datetime(
-            quarterly["report_End_Date"].str.replace("T", " "),
-            format="%Y-%m-%d %H:%M:%S",
-        )
-
-        daily["Time"] = pd.to_datetime(daily["Time"], format="%Y-%m-%d")
 
         # Upload data to database
         mdbc.upload_to_mongo(
@@ -89,6 +104,10 @@ def main() -> None:
             mongodb_key=config["MONGODB_KEY"],
             mongodb=config["MONGODB_DATABASE_DAILY"],
         )
+
+    logger.info("Database update finished.")
+
+    alnair.stop()
 
 
 if __name__ == "__main__":
