@@ -2,6 +2,10 @@
 import pymongo
 import pandas as pd
 
+import logging
+
+logger = logging.getLogger(__name__)
+
 
 def upload_to_mongo(
     ticker_name: str, inserted_data: pd.DataFrame, mongodb_key: str, mongodb: str
@@ -16,16 +20,13 @@ def upload_to_mongo(
     collection = db[ticker_name]
 
     try:
-        db.create_collection(ticker_name)
-    except Exception:
-        print("Collection already exists, ", ticker_name)
-
-    try:
         collection.delete_many({})  # Clear database, faster than finding and updating
+        logger.info(msg=str(ticker_name + " collection cleaned successfully."))
     except Exception:
-        print("Delete failed for ", ticker_name)
+        logger.error(msg=str(ticker_name + " collection clean failed."))
 
     try:
         collection.insert_many(inserted_data)
+        logger.info(msg=str(ticker_name + " inserted successfully."))
     except Exception:
-        print("Insert failed for ", ticker_name)
+        logger.error(msg=str(ticker_name + "insertion failed."))

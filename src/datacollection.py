@@ -1,14 +1,20 @@
 """Main file for the whole collection and uploading sequence."""
 import requests
 import os
+from time import sleep
+import logging
+
+import pandas as pd
+
 from typing import Tuple
+
 from common import id_conv
 from common import instrument_dictionary
 from common import get_sector
 from common import get_market
 from common import get_country
-from time import sleep
-import pandas as pd
+
+logger = logging.getLogger(__name__)
 
 
 class CollectTickerData:
@@ -46,10 +52,12 @@ class CollectTickerData:
             )
             self.priceData = ticker_price_data_frame
 
-            print("Price data downloaded for stock " + ticker_name)
+            logger.info(msg=str("Price data downloaded for stock " + ticker_name))
 
         except Exception:
-            print("couldn't download price data for stock " + ticker_name)
+            logger.error(
+                msg=str("Couldn't download price data for stock " + ticker_name)
+            )
 
         sleep(0.5)
 
@@ -135,10 +143,12 @@ class CollectTickerData:
 
             self.yearData = year_data_frame
 
-            print("Year data downloaded for stock " + ticker_name)
+            logger.info(msg=str("Year data downloaded for stock " + ticker_name))
 
         except Exception:
-            print("couldn't download year data for stock " + ticker_name)
+            logger.error(
+                msg=str("Couldn't download year data for stock " + ticker_name)
+            )
 
         sleep(0.5)
 
@@ -223,49 +233,78 @@ class CollectTickerData:
             )
             self.quarterData = quarter_data_frame
 
-            print("Quarter data downloaded for stock " + ticker_name)
+            logger.info(msg=str("Quarter data downloaded for stock " + ticker_name))
 
         except Exception:
-            print("couldn't download quarter data for stock " + ticker_name)
+            logger.error(
+                msg=str("Couldn't download quarter data for stock " + ticker_name)
+            )
 
 
 def read_csv_from_disk(
     ticker_name: str, current_wd: str
 ) -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:  # Ticker, Sector or Market
     """Read downloaded data in to memory as data frames."""
-    year = pd.read_csv(
-        filepath_or_buffer=current_wd
-        + "/data/"
-        + ticker_name
-        + "/"
-        + ticker_name
-        + "Year.csv"
-    )
-    quarter = pd.read_csv(
-        filepath_or_buffer=current_wd
-        + "/data/"
-        + ticker_name
-        + "/"
-        + ticker_name
-        + "Quarter.csv"
-    )
-    price = pd.read_csv(
-        filepath_or_buffer=current_wd
-        + "/data/"
-        + ticker_name
-        + "/"
-        + ticker_name
-        + "price.csv"
-    )
+    try:
+        yearly = pd.read_csv(
+            filepath_or_buffer=current_wd
+            + "/data/"
+            + ticker_name
+            + "/"
+            + ticker_name
+            + "Year.csv"
+        )
+        yearly["report_End_Date"] = pd.to_datetime(
+            yearly["report_End_Date"].str.replace("T", " "), format="%Y-%m-%d %H:%M:%S"
+        )
+        logger.info(msg=str("Read yearly data in to disk for " + ticker_name))
 
-    return year, quarter, price
+    except Exception:
+        logger.error(msg=str("Couldn't read yearly data in to disk for " + ticker_name))
+
+    try:
+        quarterly = pd.read_csv(
+            filepath_or_buffer=current_wd
+            + "/data/"
+            + ticker_name
+            + "/"
+            + ticker_name
+            + "Quarter.csv"
+        )
+        quarterly["report_End_Date"] = pd.to_datetime(
+            quarterly["report_End_Date"].str.replace("T", " "),
+            format="%Y-%m-%d %H:%M:%S",
+        )
+        logger.info(msg=str("Read quarterly data in to disk for " + ticker_name))
+
+    except Exception:
+        logger.error(
+            msg=str("Couldn't read quarterly data in to disk for " + ticker_name)
+        )
+
+    try:
+        daily = pd.read_csv(
+            filepath_or_buffer=current_wd
+            + "/data/"
+            + ticker_name
+            + "/"
+            + ticker_name
+            + "price.csv"
+        )
+        daily["Time"] = pd.to_datetime(daily["Time"], format="%Y-%m-%d")
+        logger.info(msg=str("Read daily data in to disk for " + ticker_name))
+
+    except Exception:
+        logger.error(msg=str("Couldn't read daily data in to disk for " + ticker_name))
+
+    return yearly, quarterly, daily
 
 
 def collect_ticker_metadata(
     apikey: str, current_wd: str
 ) -> Tuple[list, list, list, list, list, list, list, list]:
     """Function downloading meta-information of all tickers using api."""
-    print("Start retrieving meta-data")
+    logger.info(msg="Start retrieving meta-data")
 
     request_instrument = requests.get(
         "https://apiservice.borsdata.se/v1/instruments?authKey=" + apikey
@@ -326,7 +365,7 @@ def collect_ticker_metadata(
     try:
         os.mkdir(current_wd + "/data")
     except OSError:
-        print("Folder already exists")
+        logger.info(msg="Folder already exists")
 
     pd.DataFrame(
         {
@@ -367,19 +406,24 @@ def download_all_data(
     i = 0
     for item in read_tickers["Ticker"]:
         i += 1
-        print("Reading item", i, ",", item)
+        logger.info(msg="Reading item" + str(item))
+
         try:
             temp_object = CollectTickerData(
                 item, ticker_list=ticker_list, ins_id=ins_id, apikey=apikey
             )
             tickers.append(temp_object)
+            logger.info(msg=str(item + " successfull collection."))
+
         except Exception:
-            print(item, "failed collection")
+            logger.error(msg=str(item + " failed collection."))
+
         try:
             os.mkdir(current_wd + "/data/" + item)
-            print(item, "folder created")
+            logger.info(msg=str(item + " folder created."))
         except Exception:
-            print(item, "folder already exists")
+            logger.error(msg=str(item + " folder already exists."))
+
         try:
             temp_object.priceData.to_csv(
                 path_or_buf=current_wd + "/data/" + item + "/" + item + "price.csv",
@@ -388,9 +432,11 @@ def download_all_data(
                 index=False,
                 decimal=".",
             )
-            print(item, "price data created")
+            logger.info(msg=str(item + " price data created."))
+
         except Exception:
-            print(item, "couldn't write price data")
+            logger.error(msg=str(item + " couldn't write price data."))
+
         try:
             temp_object.quarterData.to_csv(
                 path_or_buf=current_wd + "/data/" + item + "/" + item + "Quarter.csv",
@@ -399,9 +445,11 @@ def download_all_data(
                 index=False,
                 decimal=".",
             )
-            print(item, "quarter data created")
+            logger.info(msg=str(item + " quarter data created."))
+
         except Exception:
-            print(item, "couldn't write quarter data")
+            logger.error(msg=str(item + " couldn't write quarter data."))
+
         try:
             temp_object.yearData.to_csv(
                 path_or_buf=current_wd + "/data/" + item + "/" + item + "Year.csv",
@@ -410,6 +458,7 @@ def download_all_data(
                 index=False,
                 decimal=".",
             )
-            print(item, "year data created")
+            logger.info(msg=str(item + " year data created."))
+
         except Exception:
-            print(item, "couldn't write year data")
+            logger.error(msg=str(item + " couldn't write year data."))

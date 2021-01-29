@@ -17,7 +17,7 @@ if [ "$PAALIAQ_RUN_ONCE" = true ] ; then
     echo "$@"
     echo "Running script now."
 
-    python main.py $@
+    poetry run python src/main.py $@
 
     if [ $? != 0 ]; then
     echo "Error occured while running application only once."
@@ -35,7 +35,7 @@ while :; do
 
     echo "Running script now."
 
-    python main.py $@
+    poetry run python src/main.py $@
 
     echo "Sleeping for ${sleeptime}s"
 
